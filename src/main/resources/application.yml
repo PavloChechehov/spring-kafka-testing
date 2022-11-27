@@ -1,0 +1,16 @@
+
+spring:
+  kafka:
+    bootstrap-servers: http://localhost:9092
+    consumer:
+      group-id: "my-group"
+test:
+  topic: test-topic
+#    producer:
+#      bootstrap-servers: 9092
+#      key-serializer: StringSerializer.class
+#      value-serializer: StringSerializer.class
+#    consumer:
+#      bootstrap-servers: 9092
+#      key-deserializer: StringSerializer.class
+#      value-deserializer: StringSerializer.class
