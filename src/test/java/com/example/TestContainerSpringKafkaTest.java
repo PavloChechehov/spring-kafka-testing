@@ -52,10 +52,16 @@ public class TestContainerSpringKafkaTest {
     @Autowired
     private KafkaProducer producer;
 
+    @DynamicPropertySource
+    static void kafkaProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.kafka.bootstrap-servers",
+                () -> kafka.getBootstrapServers());
+        registry.add("spring.kafka.consumer.group-id",
+                () -> "my-group");
+    }
 
     @Value("${test.topic}")
     private String topic;
-
 
     @BeforeEach
     public void setup() {
@@ -124,6 +130,13 @@ public class TestContainerSpringKafkaTest {
         @Bean
         public KafkaTemplate<String, String> kafkaTemplate() {
             return new KafkaTemplate<>(producerFactory());
+        }
+
+        @Bean
+        public KafkaAdmin kafkaAdmin() {
+            Map<String, Object> configProps = new HashMap<>();
+            configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
+            return new KafkaAdmin(configProps);
         }
     }
 
